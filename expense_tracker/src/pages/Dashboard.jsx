@@ -130,6 +130,19 @@ const expenses = transactions
     setIsModalOpen(false);
   };
 
+  // Delete Transaction
+const handleDelete = (id) => {
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this transaction?"
+  );
+
+  if (confirmDelete) {
+    setTransactions((prev) =>
+      prev.filter((item) => item.id !== id)
+    );
+  }
+};
+
   // Filter transactions
   const filteredTransactions = transactions.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
@@ -359,6 +372,12 @@ const expenses = transactions
                     {item.amount > 0 ? "+" : "-"}
                     {formatCurrency(Math.abs(item.amount))}
                   </h4>
+                  <button
+  className="delete-button"
+  onClick={() => handleDelete(item.id)}
+>
+  🗑️
+</button>
 
                 </div>
 

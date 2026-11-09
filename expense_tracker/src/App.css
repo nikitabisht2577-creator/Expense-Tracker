@@ -613,3 +613,18 @@ button {
     padding: 20px;
   }
 }
+/* Delete Transaction Button */
+.delete-button {
+  border: none;
+  background: #fff0f0;
+  color: #df6262;
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  background: #ffe0e0;
+}
