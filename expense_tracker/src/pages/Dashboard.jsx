@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "../App.css";
 
 function Dashboard() {
   // Initial transactions
-  const [transactions, setTransactions] = useState([
+  
+  const [transactions, setTransactions] = useState(() => {
+  const savedTransactions = localStorage.getItem("xpanse_transactions");
+
+  if (savedTransactions) {
+    return JSON.parse(savedTransactions);
+  }
+
+  return [
     {
       id: 1,
       name: "Grocery Shopping",
@@ -32,7 +40,14 @@ function Dashboard() {
       date: "2026-11-04",
       amount: -500,
     },
-  ]);
+  ];
+});
+useEffect(() => {
+  localStorage.setItem(
+    "xpanse_transactions",
+    JSON.stringify(transactions)
+  );
+}, [transactions]);
 
   // Summary states
   // Calculate Total Income
