@@ -628,3 +628,17 @@ button {
 .delete-button:hover {
   background: #ffe0e0;
 }
+.edit-button {
+  border: none;
+  background: #f2edfc;
+  color: #6d46c2;
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-left: 10px;
+}
+
+.edit-button:hover {
+  background: #e6dcfa;
+}

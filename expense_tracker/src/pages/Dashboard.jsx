@@ -3,7 +3,7 @@ import "../App.css";
 
 function Dashboard() {
   // Initial transactions
-  
+  const [editingId, setEditingId] = useState(null);
   const [transactions, setTransactions] = useState(() => {
   const savedTransactions = localStorage.getItem("xpanse_transactions");
 
@@ -89,10 +89,32 @@ const expenses = transactions
       [name]: value,
     }));
   };
+  const handleEdit = (item) => {
+  setEditingId(item.id);
+
+  setFormData({
+    title: item.name,
+    amount: String(Math.abs(item.amount)),
+    type: item.amount > 0 ? "income" : "expense",
+    category: item.category,
+    date: item.date,
+  });
+
+  setIsModalOpen(true);
+};
 
   // Add new transaction
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.title.trim()) {
+  alert("Please enter transaction title!");
+  return;
+}
+
+if (!formData.amount || Number(formData.amount) <= 0) {
+  alert("Please enter a valid amount!");
+  return;
+}
 
     const amount = Number(formData.amount);
 
@@ -111,7 +133,18 @@ const expenses = transactions
       amount: finalAmount,
     };
 
-    // setTransactions((prev) => [newTransaction, ...prev]);
+    if (editingId !== null) {
+  setTransactions((prev) =>
+    prev.map((item) =>
+      item.id === editingId
+        ? { ...newTransaction, id: editingId }
+        : item
+    )
+  );
+} else {
+  setTransactions((prev) => [newTransaction, ...prev]);
+}
+setEditingId(null);
 
     // if (formData.type === "income") {
     //   setIncome((prev) => prev + amount);
@@ -373,6 +406,12 @@ const handleDelete = (id) => {
                     {formatCurrency(Math.abs(item.amount))}
                   </h4>
                   <button
+                    className="edit-button"
+                    onClick={() => handleEdit(item)}
+                  >
+                    ✏️
+                  </button>
+                  <button
   className="delete-button"
   onClick={() => handleDelete(item.id)}
 >
@@ -399,7 +438,6 @@ const handleDelete = (id) => {
 
       {/* Add Transaction Modal */}
       {isModalOpen && (
-
         <div
           className="modal-overlay"
           onClick={() => setIsModalOpen(false)}
@@ -413,7 +451,7 @@ const handleDelete = (id) => {
             <div className="modal-header">
 
               <div>
-                <h2>Add Transaction</h2>
+                <h2>{editingId !== null ? "Edit Transaction" : "Add Transaction"}</h2>
                 <p>Record your income or expense.</p>
               </div>
 
@@ -500,8 +538,11 @@ const handleDelete = (id) => {
                   Cancel
                 </button>
 
-                <button type="submit" className="save-button">
-                  Save Transaction
+                <button
+                  type="submit"
+                  className="save-button"
+                >
+                  {editingId !== null ? "Update Transaction" : "Add Transaction"}
                 </button>
 
               </div>
