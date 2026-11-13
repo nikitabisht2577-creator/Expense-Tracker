@@ -1,4 +1,3 @@
-EXPENSE TRACKER
 Xpanse is a personal expense tracker application built to help user manage their income and expense
 in one place.
 
